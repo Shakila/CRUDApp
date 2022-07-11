@@ -45,7 +45,6 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest.getUsername()+"    "+loginRequest.getPassword());
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                         loginRequest.getPassword()));
@@ -74,15 +73,12 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
        }
         // Create new user object
-        System.out.println("-------newUser.getEmail()-----"+newUser.getEmail()+" "+newUser.getUsername()+" "+newUser.getPassword());
-
         User user = new User(newUser.getUsername(),
                 newUser.getEmail(), newUser.getPassword());
 
         Set<Role> strRoles = newUser.getRoles();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
-            System.out.println(roleRepository.findByName(ERole.ROLE_USER));
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
             roles.add(userRole);
@@ -106,10 +102,7 @@ public class AuthController {
                 }
             });
         }
-        System.out.println("-------user.getEmail()-----"+user.getEmail()+" "+user.getUsername()+" "+user.getPassword()+roles);
-
         user.setRoles(roles);
-
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully!");
     }
