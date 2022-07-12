@@ -52,8 +52,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 
-//        User user = userRepository.findByUsername(loginRequest.getUsername()).get();
-
         List<String> roles = user.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
@@ -79,6 +77,7 @@ public class AuthController {
         Set<Role> strRoles = newUser.getRoles();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
+            System.out.println(roleRepository.findByName(ERole.ROLE_USER));
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
             roles.add(userRole);
