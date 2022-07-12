@@ -28,10 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .formLogin()
-                    .defaultSuccessUrl("/", true)
-                    .permitAll()
-                    .and()
                 .authorizeRequests()
                     .antMatchers("/",
                         "/favicon.ico",
@@ -50,9 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .cors()
                 .and()
-                .csrf().disable()
-                .logout()
-                    .logoutSuccessUrl("/");
+                .csrf().disable();
     }
 
     @Override
