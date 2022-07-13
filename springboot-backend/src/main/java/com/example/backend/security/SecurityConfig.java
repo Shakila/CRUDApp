@@ -38,15 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                     .antMatchers("/api/v1/auth/**").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .httpBasic()//BASIC authentication with CSRF disabled for demo purpose
-                    .and()
-                .cors()
-                .and()
-                .csrf().disable();
+                    .anyRequest().authenticated() //Authentication required for all requests
+              .and()
+              .httpBasic()//BASIC authentication with CSRF disabled for demo purpose
+              .and()
+              .cors()
+              .and()
+              .csrf().disable();
     }
 
     @Override

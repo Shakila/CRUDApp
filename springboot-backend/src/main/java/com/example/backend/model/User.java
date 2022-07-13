@@ -3,6 +3,8 @@ package com.example.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +20,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,15 +37,26 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "username")
+    @Column(name = "username", length = 100, nullable = false)
     private String username;
     /**
      * JsonIgnore protects password field from Jackson serializing this field
      **/
-    @Column(name = "password")
+    @Column(name = "password", length = 100, nullable = false)
     private @JsonIgnore String password;
-    @Column(name = "email")
+
+    @Column(name = "email", length = 100, nullable = false)
     private String email;
+
+    @Column(nullable = false, columnDefinition = "tinyint not null default 0")
+    private boolean enabled;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    protected Date createdAt;
+
+    @UpdateTimestamp
+    protected Date updatedAt;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

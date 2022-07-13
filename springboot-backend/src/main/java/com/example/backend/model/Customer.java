@@ -1,6 +1,8 @@
 package com.example.backend.model;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Data
 @Entity
@@ -17,13 +20,19 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
-    @Column(name = "email")
+    @Column(name = "email", length = 100, nullable = false)
     private String email;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    protected Date createdAt;
+
+    @UpdateTimestamp
+    protected Date updatedAt;
     /*
     * Default constructor is used by hibernate internal user proxies to create proxy objects
     * */
