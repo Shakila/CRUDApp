@@ -7,15 +7,14 @@ const AUTH_API_BASE_URL = configData.AUTH_API_BASE_URL;
 class SignupAndLoginService {
     signUp(user) {
         try {
-            console.log(user.username + "" + user.password);
             const response = axios.post(
                 AUTH_API_BASE_URL + "/signup",
                 user,
                 {
-                    headers: { 
+                    headers: {
                         "Content-Type": "application/json"
-                    },
-                    withCredentials: true
+                    }
+                    // ,withCredentials: true
                 }
             );
             return response;
@@ -30,9 +29,19 @@ class SignupAndLoginService {
             // errRef.current.focus();
         }
     }
-    signIn() {
-        try{
-            
+    signIn(credentials) {
+        try {
+            const response = axios.post(
+                AUTH_API_BASE_URL + "/signin",
+                credentials,
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                    // ,withCredentials: true
+                }
+            );
+            return response;
         } catch (err) {
             //  if (response.status.code === 403) {
             //     console.error('ACCESS DENIED: You are not authorized');
@@ -41,7 +50,7 @@ class SignupAndLoginService {
             //     console.error();
             // }
             // errRef.current.focus();
-        }   
+        }
     }
 }
 

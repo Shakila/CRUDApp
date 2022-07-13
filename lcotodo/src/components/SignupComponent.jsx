@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { properties } from '../properties.js';
-import SignupAndLoginService from '../services/SignupAndLoginService.js';
-import configData from "../config.json";
+import SignupAndSigninService from '../services/SignupAndSigninService.js';
 import { useNavigate } from "react-router-dom";
 
 const userRegExp = RegExp(properties.USER_REGEX);
@@ -144,20 +143,14 @@ class SignupComponent extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         let user = { username: this.state.username, email: this.state.email, password: this.state.password };
-        console.log(JSON.stringify(user));
-        SignupAndLoginService.signUp(user).then(res => {
-            localStorage.setItem('user', res.data);
-
-            const loggedInUser = localStorage.getItem("user");
-            alert(JSON.stringify(loggedInUser));
+        SignupAndSigninService.signUp(user).then(res => {
             this.setState({ success: true });
-
             //clear state and controlled inputs
             this.setState({ username: "" });
             this.setState({ email: "" });
             this.setState({ password: "" });
             this.setState({ confirmPassword: "" });
-            this.props.match.navigate(`/${configData.CUSTOMERS}`);
+            this.props.match.navigate(`/`);
         });
     };
 
@@ -169,7 +162,6 @@ class SignupComponent extends Component {
             <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
-                        <pre>{JSON.stringify(this.state)}</pre>
                         <div className="card-body">
                             <section>
                                 {this.getTitle()}
@@ -207,7 +199,7 @@ class SignupComponent extends Component {
                                             Email Address:
                                         </label>
                                         <input
-                                            type="text"
+                                            type="email"
                                             id="email"
                                             autoComplete="off"
                                             onChange={(e) => this.setState({ email: e.target.value })}
@@ -227,7 +219,7 @@ class SignupComponent extends Component {
                                             }
                                         >
                                             {email && errMsgs.email ? this.getErrorIcon() : ''}
-                                            {errMsgs.email ? errMsgs.email : ''}
+                                            {errMsgs.email && !emailFocus ? errMsgs.email : ''}
                                         </p>
                                     </div>
                                     <div className="form-group">

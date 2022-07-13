@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import configData from "../config.json";
 import { properties } from '../properties.js';
 
-const emailRegExp = RegExp( properties.EMAIL_REGEX );
+const emailRegExp = RegExp(properties.EMAIL_REGEX);
 
 export function withRouter(Children) {
     return (props) => {
@@ -81,8 +81,7 @@ class CreateCustomerComponent extends Component {
     };
 
     cancel = () => {
-        const path = configData.CUSTOMERS;
-        this.props.match.navigate(`/${path}`);
+        this.props.match.navigate(`/${configData.CUSTOMERS}`);
     }
 
     getTitle = () => {
@@ -138,7 +137,7 @@ class CreateCustomerComponent extends Component {
                                         <span className="invalid-feedback">{isError.email}</span>
                                     )}
                                 </div>
-                                <button type="submit" className="btn btn-block btn-success" style={{ marginTop: "10px" }} disabled={ !firstName || !lastName || !email }>Save</button>
+                                <button type="submit" className="btn btn-block btn-success" style={{ marginTop: "10px" }} disabled={!firstName || !lastName || !email}>Save</button>
                                 <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{ marginTop: "10px", marginLeft: "10px" }}>Cancel</button>
                             </form>
                         </div>

@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import CustomerService from '../services/CustomerService';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import configData from "../config.json";
 
-export function withRouter(Children){
-    return(props)=>{
+export function withRouter(Children) {
+    return (props) => {
 
-       const match  = {navigate: useNavigate()};
-       return <Children {...props}  match = {match}/>
-   }
+        const match = { navigate: useNavigate() };
+        return <Children {...props} match={match} />
+    }
 }
 class ListCustomersComponent extends Component {
 
@@ -26,10 +26,10 @@ class ListCustomersComponent extends Component {
 
     componentDidMount() {
         CustomerService.getCustomers().then(res => {
-            this.setState({customers: res.data});
+            this.setState({ customers: res.data });
         });
     }
-    
+
     addCustomer() {
         const path = configData.ADD_CUSTOMER;
         this.props.match.navigate(`/${path}/-1`);
@@ -42,24 +42,28 @@ class ListCustomersComponent extends Component {
 
     deleteCustomer(id) {
         CustomerService.deleteCustomer(id).then(res => {
-            this.setState({customers: this.state.customers.filter(employee => employee.id !== id)});
+            this.setState({ customers: this.state.customers.filter(employee => employee.id !== id) });
         });
     }
-    
+
     viewCustomer(id) {
         const path = configData.VIEW_CUSTOMER;
         this.props.match.navigate(`/${path}/${id}`);
     }
-    
+
     render() {
+        // const loggedInUser = localStorage.getItem("user");
+        // if (!loggedInUser) {
+        //     return (<Navigate to="/"/>);
+        // } else {
         return (
             <div>
-                <h2 className = "text-center">Customers List</h2>
+                <h2 className="text-center">Customers List</h2>
                 <div>
                     <button className="btn btn-primary" onClick={this.addCustomer}>Add Customer</button>
                 </div>
                 <div className="row">
-                    <table className = "table table-striped table-boardered">
+                    <table className="table table-striped table-boardered">
                         <thead>
                             <tr>
                                 <th>Customer First Name</th>
@@ -71,17 +75,17 @@ class ListCustomersComponent extends Component {
                         <tbody>
                             {
                                 this.state.customers.map(
-                                    customer => 
-                                    <tr key={customer.id}>
-                                        <td>{customer.firstName}</td>
-                                        <td>{customer.lastName}</td>
-                                        <td>{customer.email}</td>
-                                        <td>
-                                            <button onClick={() => this.editCustomer(customer.id)} className="btn btn-info">Update</button>
-                                            <button style={{marginLeft: "10px"}} onClick={() => this.deleteCustomer(customer.id)} className="btn btn-danger">Delete</button>
-                                            <button style={{marginLeft: "10px"}} onClick={() => this.viewCustomer(customer.id)} className="btn btn-info">View</button>
-                                        </td>
-                                    </tr>
+                                    customer =>
+                                        <tr key={customer.id}>
+                                            <td>{customer.firstName}</td>
+                                            <td>{customer.lastName}</td>
+                                            <td>{customer.email}</td>
+                                            <td>
+                                                <button onClick={() => this.editCustomer(customer.id)} className="btn btn-info">Update</button>
+                                                <button style={{ marginLeft: "10px" }} onClick={() => this.deleteCustomer(customer.id)} className="btn btn-danger">Delete</button>
+                                                <button style={{ marginLeft: "10px" }} onClick={() => this.viewCustomer(customer.id)} className="btn btn-info">View</button>
+                                            </td>
+                                        </tr>
                                 )
                             }
                         </tbody>
@@ -90,6 +94,7 @@ class ListCustomersComponent extends Component {
             </div>
         );
     }
+    // }
 }
 
 export default withRouter(ListCustomersComponent);
